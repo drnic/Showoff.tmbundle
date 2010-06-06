@@ -8,4 +8,4 @@
 !SLIDE center
 # Image #
 
-![Bananajour Example](../images/bananajour-example.png)
+![Bananajour Example](images/bananajour-example.png)

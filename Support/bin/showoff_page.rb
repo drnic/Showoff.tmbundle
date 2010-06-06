@@ -4,15 +4,16 @@ require "json"
 
 class ShowoffPage
   
-  def initialize(file_path, project_path)
+  def initialize(file_path, project_path, tmp_path = "/tmp")
     @file_path, @project_path = File.expand_path(file_path), File.expand_path(project_path)
+    @tmp_path = tmp_path
   end
   
   def showoff!
     project = "textmate-showoff"
     section = File.basename(File.dirname(@file_path))
     results = {}
-    FileUtils.chdir("/tmp") do
+    FileUtils.chdir(@tmp_path) do
       FileUtils.rm_rf(project)
       FileUtils.cp_r(@project_path, project)
       FileUtils.chdir(project) do
@@ -26,11 +27,14 @@ class ShowoffPage
         json["sections"] = [ { "section" => solo_page_section } ]
         File.open("showoff.json", "w") {|f| f << JSON.dump(json)}
         
-        
         FileUtils.rm_rf("static")
-        results[:output] = `showoff static`
-        results[:error]  = results[:output] =~ /error/
-        results[:url]    = "file://localhost#{FileUtils.pwd}/static/index.html"
+        results[:output]    = `showoff static`
+        results[:error]     = results[:output] =~ /error/
+        results[:url]       = "file://localhost#{FileUtils.pwd}/static/index.html"
+        results[:root_path] = FileUtils.pwd
+        
+        FileUtils.mkdir_p("static/#{solo_page_section}/images")
+        Dir[solo_page_section + "/images/*"].each { |f| FileUtils.cp_r f, "static/#{solo_page_section}/images/" }
       end
     end
     results

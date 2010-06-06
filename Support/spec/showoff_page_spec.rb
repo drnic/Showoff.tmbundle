@@ -13,9 +13,11 @@ describe "showoff_page" do
       results = page.showoff!
       results[:url].should =~ %r{file://localhost(/private)?/tmp/textmate-showoff/static/index.html}
       results[:error].should be_false
-      json = JSON.parse(File.read(File.join(project_path, "showoff.json")))
+      tmp_project_path = results[:root_path]
+      json = JSON.parse(File.read(File.join(tmp_project_path, "showoff.json")))
       json["sections"].length.should == 1
       json["sections"].first["section"] == "textmate-showoff"
+      File.should be_exist(File.join(tmp_project_path, "static", "textmate-showoff", "images", "bananajour-example.png"))
     end
   end
 end
