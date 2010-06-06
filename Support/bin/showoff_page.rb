@@ -17,8 +17,10 @@ class ShowoffPage
       FileUtils.cp_r(@project_path, project)
       FileUtils.chdir(project) do
         solo_page_section = "textmate-showoff"
-        FileUtils.mkdir(solo_page_section)
-        File.open(solo_page_section + "/01_slide.md", "w") { |f| f << File.read(@file_path) }
+        FileUtils.cp_r(section, solo_page_section)
+        Dir[solo_page_section + "/*.md"].reject { |f| 
+          File.basename(f) == File.basename(@file_path) 
+        }.each { |f| FileUtils.rm_rf f }
         
         json = JSON.parse(File.read("showoff.json"))
         json["sections"] = [ { "section" => solo_page_section } ]
