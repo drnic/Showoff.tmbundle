@@ -17,8 +17,9 @@ describe "showoff_page" do
     
     it "should generate static showoff presentation for just this page" do
       page = ShowoffPage.new(@stdin)
-      url = page.showoff!
-      url.should =~ %r{file://localhost(/private)?/tmp/textmate-showoff/static/index.html}
+      results = page.showoff!
+      results[:url].should =~ %r{file://localhost(/private)?/tmp/textmate-showoff/static/index.html}
+      results[:error].should be_false
     end
   end
 end
