@@ -31,10 +31,15 @@ if __FILE__ == $PROGRAM_NAME
   print <<-HTML
   <html>
     <head>
-      <meta http-equiv="Content-type" content="text/html; charset=utf-8; Location=#{url}">
+      <meta http-equiv="Content-type" content="text/html; charset=utf-8">
       <title>Redirecting...</title>
     </head>
-    <body><p>Redirecting to presentation...</p></body>
+    <body>
+      <p>Redirecting to <a id="url" href="#{url}">presentation</a></p>
+      <script>
+        window.location.href = "#{url}";
+      </script>
+    </body>
   </html>
   HTML
 end
