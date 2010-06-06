@@ -1,27 +1,30 @@
 require "fileutils"
+require "rubygems"
+require "json"
 
 class ShowoffPage
   
-  def initialize(page)
-    @page = page
-    @page = @page.read if @page.respond_to?(:read)
+  def initialize(file_path, project_path)
+    @file_path, @project_path = File.expand_path(file_path), File.expand_path(project_path)
+    p @file_path
+    p @project_path
   end
   
   def showoff!
     project = "textmate-showoff"
+    section = File.basename(File.dirname(@file_path))
     results = {}
     FileUtils.chdir("/tmp") do
-      `showoff create #{project}` unless File.exist?(project)
+      FileUtils.rm_rf(project)
+      FileUtils.cp_r(@project_path, project)
       FileUtils.chdir(project) do
-        if initial_page = Dir["*/*.md"].first
-          File.open(initial_page, "w") do |f|
-            f << @page
-          end
-          FileUtils.rm_rf("static")
-          results[:output] = `showoff static`
-          results[:error]  = results[:output] =~ /error/
-          results[:url]    = "file://localhost#{FileUtils.pwd}/static/index.html"
-        end
+        FileUtils.rm_rf("static")
+        json = JSON.parse(File.read("showoff.json"))
+        json["sections"] = [ { "section" => section } ]
+        File.open("showoff.json", "w") {|f| f << JSON.dump(json)}
+        results[:output] = `showoff static`
+        results[:error]  = results[:output] =~ /error/
+        results[:url]    = "file://localhost#{FileUtils.pwd}/static/index.html"
       end
     end
     results
@@ -29,7 +32,7 @@ class ShowoffPage
 end
 
 if __FILE__ == $PROGRAM_NAME
-  page = ShowoffPage.new(STDIN.read)
+  page = ShowoffPage.new(ENV['TM_FILEPATH'], ENV['TM_PROJECT_DIRECTORY'])
   results = page.showoff!
   url = results[:url]
   if results[:error]
@@ -54,7 +57,7 @@ if __FILE__ == $PROGRAM_NAME
   <html>
     <head>
       <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-      <title>Redirecting...</title>
+      <title>Showoff.tmbundle</title>
     </head>
     <body>
       #{body}

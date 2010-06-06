@@ -2,24 +2,20 @@ require File.dirname(__FILE__) + "/spec_helper"
 require "showoff_page"
 
 
+# TODO - clone current project + set showoff.json to a new file "textmate-showoff/01_slide.md"
+
 describe "showoff_page" do
   describe "single slide on page" do
-    before do
-      @page = <<-MARKDOWN.gsub(/^      /, '')
-      !SLIDE bullets
-      # Header #
-      
-      * Bullet 1
-      * Bullet 2
-      MARKDOWN
-      @stdin = StringIO.new(@page)
-    end
-    
     it "should generate static showoff presentation for just this page" do
-      page = ShowoffPage.new(@stdin)
+      page_path = File.dirname(__FILE__) + "/../fixtures/test-presentation/one/target_slide.md"
+      project_path = File.dirname(__FILE__) + "/../fixtures/test-presentation"
+      page = ShowoffPage.new(page_path, project_path)
       results = page.showoff!
       results[:url].should =~ %r{file://localhost(/private)?/tmp/textmate-showoff/static/index.html}
       results[:error].should be_false
+      json = JSON.parse(File.read(File.join(project_path, "showoff.json")))
+      json["sections"].length.should == 1
+      json["sections"].first["section"] == "one"
     end
   end
 end
