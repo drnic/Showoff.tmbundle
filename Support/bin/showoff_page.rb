@@ -6,8 +6,6 @@ class ShowoffPage
   
   def initialize(file_path, project_path)
     @file_path, @project_path = File.expand_path(file_path), File.expand_path(project_path)
-    p @file_path
-    p @project_path
   end
   
   def showoff!
@@ -18,10 +16,16 @@ class ShowoffPage
       FileUtils.rm_rf(project)
       FileUtils.cp_r(@project_path, project)
       FileUtils.chdir(project) do
-        FileUtils.rm_rf("static")
+        solo_page_section = "textmate-showoff"
+        FileUtils.mkdir(solo_page_section)
+        File.open(solo_page_section + "/01_slide.md", "w") { |f| f << File.read(@file_path) }
+        
         json = JSON.parse(File.read("showoff.json"))
-        json["sections"] = [ { "section" => section } ]
+        json["sections"] = [ { "section" => solo_page_section } ]
         File.open("showoff.json", "w") {|f| f << JSON.dump(json)}
+        
+        
+        FileUtils.rm_rf("static")
         results[:output] = `showoff static`
         results[:error]  = results[:output] =~ /error/
         results[:url]    = "file://localhost#{FileUtils.pwd}/static/index.html"

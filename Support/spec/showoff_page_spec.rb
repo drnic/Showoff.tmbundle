@@ -15,7 +15,7 @@ describe "showoff_page" do
       results[:error].should be_false
       json = JSON.parse(File.read(File.join(project_path, "showoff.json")))
       json["sections"].length.should == 1
-      json["sections"].first["section"] == "one"
+      json["sections"].first["section"] == "textmate-showoff"
     end
   end
 end
