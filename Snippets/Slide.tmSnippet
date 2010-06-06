@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>content</key>
-	<string>!SLIDE ${1:b}${1/(b)|(c)|.*/(?2:ommandline)(?1:ullets)/}$2
+	<string>!SLIDE ${1:b}${1/(b)|(c\b)|(ce)|.*/(?1:ullets)(?2:ommandline)(?3:nter)/}$2
 # $0
 </string>
 	<key>name</key>
