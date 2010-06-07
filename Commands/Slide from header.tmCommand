@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+
+require "#{ENV['TM_SUPPORT_PATH']}/lib/exit_codes"
+require "#{ENV['TM_SUPPORT_PATH']}/lib/escape"
+
+header = ENV["TM_SELECTED_TEXT"] || ENV["TM_CURRENT_LINE"] or
+  TextMate.exit_show_tool_tip(
+    "Please type the new function's name or use the slide⇥ snippet."
+  )
+
+print &lt;&lt;-SNIPPET
+!SLIDE \${1:b}\${1/(b)|(c\b)|(co)|(ce)|(f)|(s)|.*/(?1:ullets)(?2:ommandline)(?3:de)(?4:nter)(?5:ull-page)(?6:mbullets)/}\$2
+# \${5:#{header}} #
+
+\$0
+SNIPPET
+</string>
+	<key>fallbackInput</key>
+	<string>word</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>$</string>
+	<key>name</key>
+	<string>Slide from header</string>
+	<key>output</key>
+	<string>insertAsSnippet</string>
+	<key>scope</key>
+	<string>text.html.markdown.showoff</string>
+	<key>uuid</key>
+	<string>705DE3AF-FC61-416A-9021-FB3375A0CD2A</string>
+</dict>
+</plist>
