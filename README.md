@@ -4,7 +4,7 @@ The TextMate bundle to create and preview [Showoff](http://github.com/schacon/sh
 
 ## Vaguely Related Flickr Image ##
 
-[Showing Off](http://farm4.static.flickr.com/3152/3033004415_fc593a0819_m.jpg)
+![Showing Off](http://farm4.static.flickr.com/3152/3033004415_fc593a0819_m.jpg)
 
 ## Installation ##
 
