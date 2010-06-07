@@ -1,6 +1,6 @@
 # Showoff TextMate bundle #
 
-The TextMate bundle to create and preview Showoff presentation files.
+The TextMate bundle to create and preview [Showoff](http://github.com/schacon/showoff) presentation files.
 
 ## Installation ##
 
