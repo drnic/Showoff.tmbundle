@@ -16,7 +16,7 @@ header = ENV["TM_SELECTED_TEXT"] || ENV["TM_CURRENT_WORD"] or
   )
 
 print &lt;&lt;-SNIPPET
-!SLIDE \${1:b}\${1/(b)|(c\b)|(co)|(ce)|(f)|(s)|.*/(?1:ullets)(?2:ommandline)(?3:de)(?4:nter)(?5:ull-page)(?6:mbullets)/}\$2
+!SLIDE \${1:b}\${1/(b)|(c\\b)|(co)|(ce)|(f)|(s)|.*/(?1:ullets)(?2:ommandline)(?3:de)(?4:nter)(?5:ull-page)(?6:mbullets)/}\$2
 # \${5:#{header}} #
 
 \$0
