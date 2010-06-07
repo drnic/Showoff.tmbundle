@@ -29,7 +29,7 @@ SNIPPET
 	<key>keyEquivalent</key>
 	<string>$</string>
 	<key>name</key>
-	<string>Slide from header</string>
+	<string>New Slide from header</string>
 	<key>output</key>
 	<string>insertAsSnippet</string>
 	<key>scope</key>
